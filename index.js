@@ -26,7 +26,8 @@ Client.prototype.upload = function(localFile, remoteFile, headers) {
     if (err) {
       uploader.emit('error', err);
     } else if (resp.statusCode === 200 || resp.statusCode === 307) {
-      uploader.emit('end', resp.req.url);
+      var url = resp.req ? resp.req.url : resp.socket._httpMessage.url;
+      uploader.emit('end', url);
     } else {
       uploader.emit('error', new Error("s3 http status code " + resp.statusCode));
     }
